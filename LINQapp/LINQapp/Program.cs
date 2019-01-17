@@ -17,7 +17,9 @@ namespace LINQapp
             List<Neighborhoods> list = handleJSON();
             //Print(list);
             IEnumerable<Neighborhoods> noEmptyNames = FilterOutNoNames(list);
-            Print(noEmptyNames);
+            //Print(noEmptyNames);
+            IEnumerable<Neighborhoods> noDuplicated = RemoveDuplicates(noEmptyNames);
+            Print(noDuplicated);
             
         }
 
@@ -30,14 +32,14 @@ namespace LINQapp
             {
                 Neighborhoods neigh = new Neighborhoods
                 {
-                   Neighborhood = (string)json["features"][i]["properties"]["neighborhood"],
+                    Neighborhood = (string)json["features"][i]["properties"]["neighborhood"],
                     Zip = (string)json["features"][i]["properties"]["zip"],
-                   City = (string)json["features"][i]["properties"]["city"],
-                   State = (string)json["features"][i]["properties"]["state"],
-                   Borough = (string)json["features"][i]["properties"]["borough"],
-                   County = (string)json["features"][i]["properties"]["county"],
-                   Latitude = (double)json["features"][i]["geometry"]["coordinates"][0],
-                   Longitude = (double)json["features"][i]["geometry"]["coordinates"][1],
+                    City = (string)json["features"][i]["properties"]["city"],
+                    State = (string)json["features"][i]["properties"]["state"],
+                    Borough = (string)json["features"][i]["properties"]["borough"],
+                    County = (string)json["features"][i]["properties"]["county"],
+                    Latitude = (double)json["features"][i]["geometry"]["coordinates"][0],
+                    Longitude = (double)json["features"][i]["geometry"]["coordinates"][1],
 
                };
                 neighbordhoods.Add(neigh);
@@ -83,9 +85,29 @@ namespace LINQapp
             return newList;
         }
 
-
-
-            
-        
+        public static IEnumerable<Neighborhoods> RemoveDuplicates(IEnumerable<Neighborhoods> list)
+        {
+            String[] testString = new string[200];
+            int counter = 0;
+            foreach (Neighborhoods neigh in list)
+            {
+                if (!testString.Contains(neigh.Neighborhood))
+                {
+                    Console.WriteLine("weeee");
+                    counter++;
+                    testString[counter] = neigh.Neighborhood;
+                }
+                else
+                {
+                    neigh.Duplicate = true;
+                    Console.WriteLine("boooo");
+                }
+            }
+            IEnumerable<Neighborhoods> newList = from n in list
+                                                 where n.Duplicate == false
+                                                 select n;
+            Print(newList);
+            return newList;
+        }
     }
 }
