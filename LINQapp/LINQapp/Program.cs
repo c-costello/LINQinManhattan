@@ -15,14 +15,33 @@ namespace LINQapp
         {
             Console.WriteLine("Hello World!");
             List<Neighborhoods> list = handleJSON(GetJSON("../../../data.json"));
-            Print(list);
             IEnumerable<Neighborhoods> noEmptyNames = FilterOutNoNames(list);
-            Print(noEmptyNames);
             IEnumerable<Neighborhoods> noDuplicated = RemoveDuplicates(noEmptyNames);
+            IEnumerable<Neighborhoods> noDuplicatesOrEmptyNames = FilerNamesAndRemoveDupilcates();
+
+            Console.WriteLine("List: ");
+            Print(list);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("List with Empty Names Removed: ");
+            Print(noEmptyNames);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("List with Duplicates and Empty Names Removed: ");
             Print(noDuplicated);
-            Print(FilerNamesAndRemoveDupilcates());
-            Print(FilterOutNoNamesLamda(list));
-            
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("List with Duplicates and Empty Names Removed and Combined: ");
+            Print(noDuplicatesOrEmptyNames);
+            Console.WriteLine();
+            Console.WriteLine();
+
+            //Console.WriteLine("List with Empty Names Removed with Lamda Statement: ");
+            //Print(FilterOutNoNamesLamda(list));
+
         }
         /// <summary>
         /// Creates JObject 
@@ -40,22 +59,24 @@ namespace LINQapp
         /// <returns>List\<Neighbords\></returns>
         public static List<Neighborhoods> handleJSON(JObject json)
         {
-
+            var obj = json["features"];
+            
+            
             List<Neighborhoods> neighbordhoods = new List<Neighborhoods>();
-            for(int i = 0; i < 100; i++)
+            foreach(var feature in obj)
             {
                 Neighborhoods neigh = new Neighborhoods
                 {
-                    Neighborhood = (string)json["features"][i]["properties"]["neighborhood"],
-                    Zip = (string)json["features"][i]["properties"]["zip"],
-                    City = (string)json["features"][i]["properties"]["city"],
-                    State = (string)json["features"][i]["properties"]["state"],
-                    Borough = (string)json["features"][i]["properties"]["borough"],
-                    County = (string)json["features"][i]["properties"]["county"],
-                    Latitude = (double)json["features"][i]["geometry"]["coordinates"][0],
-                    Longitude = (double)json["features"][i]["geometry"]["coordinates"][1],
+                    Neighborhood = (string)feature["properties"]["neighborhood"],
+                    Zip = (string)feature["properties"]["zip"],
+                    City = (string)feature["properties"]["city"],
+                    State = (string)feature["properties"]["state"],
+                    Borough = (string)feature["properties"]["borough"],
+                    County = (string)feature["properties"]["county"],
+                    Latitude = (double)feature["geometry"]["coordinates"][0],
+                    Longitude = (double)feature["geometry"]["coordinates"][1],
 
-               };
+                };
                 neighbordhoods.Add(neigh);
 
             }
