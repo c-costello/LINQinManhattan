@@ -17,9 +17,11 @@ namespace LINQapp
             List<Neighborhoods> list = handleJSON();
             //Print(list);
             IEnumerable<Neighborhoods> noEmptyNames = FilterOutNoNames(list);
-            //Print(noEmptyNames);
+            Print(noEmptyNames);
             IEnumerable<Neighborhoods> noDuplicated = RemoveDuplicates(noEmptyNames);
-            Print(noDuplicated);
+            //Print(noDuplicated);
+            //Print(FilerNamesAndRemoveDupilcates());
+            //Print(FilterOutNoNamesLamda(list));
             
         }
 
@@ -54,14 +56,6 @@ namespace LINQapp
             {
 
                 Console.WriteLine(neighborhood.Neighborhood);
-                //Console.WriteLine(neighborhood.Zip);
-                //Console.WriteLine(neighborhood.State);
-                //Console.WriteLine(neighborhood.City);
-                //Console.WriteLine(neighborhood.Borough);
-                //Console.WriteLine(neighborhood.County);
-                //Console.WriteLine(neighborhood.Longitude);
-                //Console.WriteLine(neighborhood.Latitude);
-                Console.WriteLine();
 
             }
         }
@@ -71,7 +65,6 @@ namespace LINQapp
             {
 
                 Console.WriteLine(neighborhood.Neighborhood);
-                Console.WriteLine();
 
             }
         }
@@ -93,21 +86,51 @@ namespace LINQapp
             {
                 if (!testString.Contains(neigh.Neighborhood))
                 {
-                    Console.WriteLine("weeee");
                     counter++;
                     testString[counter] = neigh.Neighborhood;
                 }
                 else
                 {
                     neigh.Duplicate = true;
-                    Console.WriteLine("boooo");
                 }
             }
             IEnumerable<Neighborhoods> newList = from n in list
                                                  where n.Duplicate == false
                                                  select n;
-            Print(newList);
             return newList;
         }
+
+
+        public static IEnumerable<Neighborhoods> FilerNamesAndRemoveDupilcates()
+        {
+            List<Neighborhoods> list = handleJSON();
+            String[] testString = new string[200];
+            int counter = 0;
+            foreach (Neighborhoods neigh in list)
+            {
+                if (!testString.Contains(neigh.Neighborhood))
+                {
+                    counter++;
+                    testString[counter] = neigh.Neighborhood;
+                }
+                else
+                {
+                    neigh.Duplicate = true;
+                }
+            }
+            IEnumerable<Neighborhoods> filteredList = list.Where(n => n.Neighborhood.Length > 0 && n.Duplicate == false);
+            return filteredList;
+        }
+
+        public static IEnumerable<Neighborhoods> FilterOutNoNamesLamda(List<Neighborhoods> list)
+        {
+            IEnumerable<Neighborhoods> newList = list.Where(n => n.Neighborhood.Length > 0);
+
+            return newList;
+
+        }
     }
+
+
+
 }
