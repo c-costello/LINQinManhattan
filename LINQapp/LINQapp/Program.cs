@@ -14,7 +14,7 @@ namespace LINQapp
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            List<Neighborhoods> list = handleJSON();
+            List<Neighborhoods> list = handleJSON(GetJSON("../../../data.json"));
             Print(list);
             IEnumerable<Neighborhoods> noEmptyNames = FilterOutNoNames(list);
             Print(noEmptyNames);
@@ -25,12 +25,21 @@ namespace LINQapp
             
         }
         /// <summary>
+        /// Creates JObject 
+        /// </summary>
+        /// <param name="path">string</param>
+        /// <returns>JObject</returns>
+        public static JObject GetJSON(string path)
+        {
+            JObject json = JObject.Parse(File.ReadAllText(@path));
+            return json;
+        }
+        /// <summary>
         /// converts Json object into a list of Neighborhood objects
         /// </summary>
         /// <returns>List\<Neighbords\></returns>
-        public static List<Neighborhoods> handleJSON()
+        public static List<Neighborhoods> handleJSON(JObject json)
         {
-            JObject json = JObject.Parse(File.ReadAllText(@"../../../data.json"));
 
             List<Neighborhoods> neighbordhoods = new List<Neighborhoods>();
             for(int i = 0; i < 100; i++)
@@ -128,7 +137,7 @@ namespace LINQapp
         /// <returns>IEnumerable</returns>
         public static IEnumerable<Neighborhoods> FilerNamesAndRemoveDupilcates()
         {
-            List<Neighborhoods> list = handleJSON();
+            List<Neighborhoods> list = handleJSON(GetJSON("../../../data.json"));
             String[] testString = new string[200];
             int counter = 0;
             foreach (Neighborhoods neigh in list)
