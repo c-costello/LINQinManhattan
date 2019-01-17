@@ -15,7 +15,9 @@ namespace LINQapp
         {
             Console.WriteLine("Hello World!");
             List<Neighborhoods> list = handleJSON();
-            Print(list);
+            //Print(list);
+            IEnumerable<Neighborhoods> noEmptyNames = FilterOutNoNames(list);
+            Print(noEmptyNames);
             
         }
 
@@ -61,6 +63,26 @@ namespace LINQapp
 
             }
         }
+        public static void Print(IEnumerable<Neighborhoods> list)
+        {
+            foreach (Neighborhoods neighborhood in list)
+            {
+
+                Console.WriteLine(neighborhood.Neighborhood);
+                Console.WriteLine();
+
+            }
+        }
+
+        public static IEnumerable<Neighborhoods> FilterOutNoNames(List<Neighborhoods> list)
+        {
+            IEnumerable<Neighborhoods> newList = from n in list
+                          where n.Neighborhood.Length > 0
+                          select n;
+
+            return newList;
+        }
+
 
 
             
