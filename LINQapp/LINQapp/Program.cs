@@ -19,28 +19,28 @@ namespace LINQapp
             IEnumerable<Neighborhoods> noDuplicated = RemoveDuplicates(noEmptyNames);
             IEnumerable<Neighborhoods> noDuplicatesOrEmptyNames = FilerNamesAndRemoveDupilcates();
 
-            Console.WriteLine("List: ");
-            Print(list);
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("List: ");
+            //Print(list);
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("List with Empty Names Removed: ");
-            Print(noEmptyNames);
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("List with Empty Names Removed: ");
+            //Print(noEmptyNames);
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("List with Duplicates and Empty Names Removed: ");
-            Print(noDuplicated);
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("List with Duplicates and Empty Names Removed: ");
+            //Print(noDuplicated);
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("List with Duplicates and Empty Names Removed and Combined: ");
-            Print(noDuplicatesOrEmptyNames);
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("List with Duplicates and Empty Names Removed and Combined: ");
+            //Print(noDuplicatesOrEmptyNames);
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            //Console.WriteLine("List with Empty Names Removed with Lamda Statement: ");
-            //Print(FilterOutNoNamesLamda(list));
+            Console.WriteLine("List with Empty Names Removed with Lamda Statement: ");
+            Print(FilterOutNoNamesLamda(list));
 
         }
         /// <summary>
@@ -59,9 +59,7 @@ namespace LINQapp
         /// <returns>List\<Neighbords\></returns>
         public static List<Neighborhoods> handleJSON(JObject json)
         {
-            var obj = json["features"];
-            
-            
+            var obj = json["features"];            
             List<Neighborhoods> neighbordhoods = new List<Neighborhoods>();
             foreach(var feature in obj)
             {
